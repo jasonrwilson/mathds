@@ -1,0 +1,17 @@
+{
+  "index.qmd": {
+    "index.html": "60a91b70"
+  },
+  "chapters/ch01.qmd": {
+    "ch01.html": "f6a1d2cb"
+  },
+  "chapters/chapter1_intro_linear_systems.qmd": {
+    "chapter1_intro_linear_systems.html": "bde95061"
+  },
+  "chapter1/section1_intro_linear_systems.qmd": {
+    "section1_intro_linear_systems.html": "71ee8af5"
+  },
+  "chapter1/section2_intro_matrices_vectors.qmd": {
+    "section2_intro_matrices_vectors.html": "a4128ae6"
+  }
+}

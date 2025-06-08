@@ -1,0 +1,768 @@
+---
+title: "1.2 Introduction to Matrices and Vectors"
+author: "Jason R. Wilson"
+format: html
+jupyter: python3
+---
+
+Introduction to Matrices and Vectors
+
+::: {.callout-note title="Definition: Matrix"}
+A $m \times n$ **matrix** $A$ is a rectangular array of $mn$ entries:
+$$
+A = \begin{bmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} & \cdots & a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{m1} & a_{m2} & \cdots & a_{mn}
+\end{bmatrix} = \begin{bmatrix} a_{ij} \end{bmatrix}
+$$
+where $a_{ij}$ denotes the entry in row $i$ and column $j$.
+
+- The set of all such matrices with real entries is $\mathbb{R}^{m \times n}$
+- Matrices in $\mathbb{R}^{n \times n}$ are called **square matrices**
+:::
+
+**Remark 1:** Real numbers are also called **scalars**. 
+
+---
+
+### Example 1
+
+Let:
+$$
+A = \begin{bmatrix} 1 & 0 & 3 \\ -1 & 2 & 5 \end{bmatrix}, \quad
+B = \begin{bmatrix} 1 & 2 \\ 2 & -3 \\ 4 & -1 \end{bmatrix}, \quad
+C = \begin{bmatrix} 1 & 0 & -1 \\ 2 & 1 & 3 \\ -1 & 4 & 0 \end{bmatrix}
+$$
+
+Fill in:
+
+- $A$ is in $\mathbb{R}^{2 \times 3}$
+- $B$ is in $\mathbb{R}^{3 \times 2}$
+- $C$ is in $\mathbb{R}^{3 \times 3}$
+
+Now compute:
+
+- $a_{23} = 5$
+- $b_{22} = -3$
+- $c_{32} = 4$
+
+---
+
+::: {.callout-note title="Definition: Matrix Addition and Scalar Multiplication"}
+Let $A, B \in \mathbb{R}^{m \times n}$ and $c \in \mathbb{R}$. Then:
+$$
+A + B = \begin{bmatrix} a_{ij} + b_{ij} \end{bmatrix}, \quad
+cA = \begin{bmatrix} c a_{ij} \end{bmatrix}
+$$
+Also:
+$$
+-A = (-1)A, \quad A - B = A + (-B)
+$$
+:::
+
+**Remark 2:** Matrices must have the **same shape** to be added or subtracted.
+
+---
+
+### Example 2
+
+Let:
+$$
+A = \begin{bmatrix} 1 & 0 \\ -1 & 2 \\ 2 & 3 \end{bmatrix}, \quad
+B = \begin{bmatrix} 2 & -1 \\ 3 & 4 \\ 1 & 5 \end{bmatrix}
+$$
+
+::: {.callout-tip collapse=true title="Try computing each matrix expression by hand"}
+**1. $A + B$**
+
+$$
+\begin{bmatrix} 1+2 & 0+(-1) \\ -1+3 & 2+4 \\ 2+1 & 3+5 \end{bmatrix} =
+\begin{bmatrix} 3 & -1 \\ 2 & 6 \\ 3 & 8 \end{bmatrix}
+$$
+
+**2. $2A$**
+
+$$
+2 \cdot \begin{bmatrix} 1 & 0 \\ -1 & 2 \\ 2 & 3 \end{bmatrix} =
+\begin{bmatrix} 2 & 0 \\ -2 & 4 \\ 4 & 6 \end{bmatrix}
+$$
+
+**3. $-B$**
+
+$$
+-1 \cdot \begin{bmatrix} 2 & -1 \\ 3 & 4 \\ 1 & 5 \end{bmatrix} =
+\begin{bmatrix} -2 & 1 \\ -3 & -4 \\ -1 & -5 \end{bmatrix}
+$$
+
+**4. $2A - B$**
+
+$$
+\begin{bmatrix} 2 & 0 \\ -2 & 4 \\ 4 & 6 \end{bmatrix} -
+\begin{bmatrix} 2 & -1 \\ 3 & 4 \\ 1 & 5 \end{bmatrix} =
+\begin{bmatrix} 0 & 1 \\ -5 & 0 \\ 3 & 1 \end{bmatrix}
+$$
+:::
+
+**Remark 3:** $2A - B$ is a **linear combination** of $A$ and $B$.
+
+**Remark 4:** $O = \begin{bmatrix} 0 \end{bmatrix}$ is the **zero matrix**.
+
+---
+
+### Example 3: Associativity of Matrix Addition
+
+**Exercise:** Let $A, B, C$ be matrices of the same size. Show that matrix addition is associative:
+$$
+(A + B) + C = A + (B + C)
+$$
+
+::: {.callout-tip collapse=true title="Hint and Solution"}
+Compute both sides entry-wise:
+- $(A + B) + C = [a_{ij} + b_{ij}] + c_{ij} = a_{ij} + b_{ij} + c_{ij}$
+- $A + (B + C) = a_{ij} + [b_{ij} + c_{ij}] = a_{ij} + b_{ij} + c_{ij}$
+
+✅ The two results are equal entry by entry.
+:::
+
+---
+
+### Linear Combinations of Matrices
+
+::: {.callout-note title="Definition: Linear Combination"}
+For scalars $c_1, ..., c_k \in \mathbb{R}$ and matrices $A_1, ..., A_k \in \mathbb{R}^{m \times n}$, the expression:
+$$
+c_1 A_1 + \cdots + c_k A_k
+$$
+is called a **linear combination** of the matrices.
+:::
+
+---
+
+### Example 4: Linear Combinations
+
+Let:
+$$
+A_1 = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}, \quad
+A_2 = \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}
+$$
+
+**Exercise:** Determine whether each matrix below is a linear combination of $A_1$ and $A_2$:
+
+1. $B_1 = \begin{bmatrix} 1 & 2 \\ 2 & 1 \end{bmatrix}$
+2. $B_2 = \begin{bmatrix} 1 & 2 \\ 2 & 2 \end{bmatrix}$
+
+::: {.callout-tip collapse=true title="Try to express $B_1$ as $c_1 A_1 + c_2 A_2$"}
+Let:
+$$
+c_1 A_1 + c_2 A_2 =
+\begin{bmatrix} c_1 & c_2 \\ c_2 & c_1 \end{bmatrix}
+$$
+Solve:
+- $c_1 = 1$, $c_2 = 2$  
+✅ So $B_1 = A_1 + 2A_2$
+:::
+
+::: {.callout-tip collapse=true title="Try to express $B_2$ as a linear combination"}
+Assume:
+$$
+\begin{bmatrix} c_1 & c_2 \\ c_2 & c_1 \end{bmatrix} =
+\begin{bmatrix} 1 & 2 \\ 2 & 2 \end{bmatrix}
+$$
+From $(1,1)$: $c_1 = 1$  
+From $(2,2)$: $c_1 = 2$ ⛔ Contradiction
+
+❌ So $B_2$ is not a linear combination.
+:::
+
+---
+
+### Example 5: Columns and Rows
+
+Let:
+$$
+A = \begin{bmatrix} 1 & -1 \\ 2 & 1 \\ 2 & 3 \end{bmatrix}
+$$
+
+**Exercise:** Identify the first column and second row of $A$.
+
+::: {.callout-tip collapse=true title="Show Answer"}
+- First column = $\begin{bmatrix} 1 \\ 2 \\ 2 \end{bmatrix}$
+- Second row = $\begin{bmatrix} 2 & 1 \end{bmatrix}$
+:::
+
+---
+
+### Transpose of a Matrix
+
+::: {.callout-note title="Definition: Transpose"}
+For $A \in \mathbb{R}^{m \times n}$, the **transpose** $A^T \in \mathbb{R}^{n \times m}$ is defined as:
+$$
+A^T = \begin{bmatrix}
+a_{11} & a_{21} & \cdots & a_{m1} \\
+a_{12} & a_{22} & \cdots & a_{m2} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{1n} & a_{2n} & \cdots & a_{mn}
+\end{bmatrix}
+= \begin{bmatrix} a_{ji} \end{bmatrix}
+$$
+:::
+
+**Remark 5:** The transpose interchanges the rows and columns of a matrix.
+
+---
+
+### Example 6: Computing the Transpose
+
+Let:
+$$
+A = \begin{bmatrix} 2 & 1 & 0 \\ -1 & 5 & 7 \end{bmatrix}
+$$
+
+**Exercise:** Compute $A^T$.
+
+::: {.callout-tip collapse=true title="Show Answer"}
+$$
+A^T = \begin{bmatrix}
+2 & -1 \\
+1 & 5 \\
+0 & 7
+\end{bmatrix}
+$$
+:::
+
+---
+
+### Symmetric Matrices
+
+::: {.callout-note title="Definition: Symmetric Matrix"}
+A square matrix $A \in \mathbb{R}^{n \times n}$ is **symmetric** if:
+$$
+A^T = A
+$$
+:::
+
+### Example 7
+
+**Exercise:** Determine whether each matrix is symmetric:
+
+1. $A = \begin{bmatrix} 3 & -1 & 2 \\ -1 & 1 & 4 \\ 2 & 4 & 5 \end{bmatrix}$
+2. $B = \begin{bmatrix} 1 & 0 & 1 \\ 0 & 2 & 0 \\ -1 & 0 & 3 \end{bmatrix}$
+
+::: {.callout-tip collapse=true title="Show Solution"}
+- For $A$, check that $A^T = A$. All off-diagonal entries match: ✅ symmetric.
+- For $B$, $b_{13} = 1$ but $b_{31} = -1$ ⛔ not symmetric.
+:::
+
+---
+
+### Proposition 2: Properties of the Transpose
+
+::: {.callout-note title="Transpose Identities"}
+Let $A, B \in \mathbb{R}^{m \times n}$ and scalars $s, t \in \mathbb{R}$:
+
+::: columns
+- $(A + B)^T = A^T + B^T$
+- $(sA)^T = sA^T$
+- $(sA + tB)^T = sA^T + tB^T$
+- $(A^T)^T = A$
+:::
+:::
+
+---
+
+### Column Vectors
+
+::: {.callout-note title="Definition: Column Vector"}
+An **$n$-dimensional column vector** is a matrix of the form
+$$
+\mathbf{x} =
+\begin{bmatrix}
+x_1 \\
+x_2 \\
+\vdots \\
+x_n
+\end{bmatrix}
+$$
+
+The set of all such vectors is denoted $\mathbb{R}^n$. We often refer to these simply as **vectors**.
+:::
+
+**Remark 6:** We use $\mathbf{0} = \begin{bmatrix} 0 \end{bmatrix}$ to denote the vector whose entries are all zero.
+
+---
+
+### Example 9
+
+**Exercise:** Is the vector
+$$
+\begin{bmatrix} 1 \\ 0 \\ -5 \end{bmatrix}
+$$
+a linear combination of the vectors
+$$
+\begin{bmatrix} 1 \\ 2 \\ 1 \end{bmatrix}, \quad
+\begin{bmatrix} 1 \\ 0 \\ -1 \end{bmatrix}, \quad
+\begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}?
+$$
+
+::: {.callout-tip collapse=true title="Show solution"}
+Let:
+$$
+c_1
+\begin{bmatrix} 1 \\ 2 \\ 1 \end{bmatrix} +
+c_2
+\begin{bmatrix} 1 \\ 0 \\ -1 \end{bmatrix} +
+c_3
+\begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}
+=
+\begin{bmatrix} 1 \\ 0 \\ -5 \end{bmatrix}
+$$
+
+This gives a system:
+- $c_1 + c_2 = 1$
+- $2c_1 + c_3 = 0$
+- $c_1 - c_2 = -5$
+
+From the first: $c_2 = 1 - c_1$  
+Sub into third:
+$$
+c_1 - (1 - c_1) = -5 \Rightarrow 2c_1 - 1 = -5 \Rightarrow c_1 = -2
+$$
+Then:
+- $c_2 = 3$
+- $c_3 = 4$
+
+So this vector **is** a linear combination.
+:::
+
+---
+
+### Example 10
+
+Any vector $\mathbf{x} = \begin{bmatrix} x_1 \\ x_2 \\ x_3 \end{bmatrix} \in \mathbb{R}^3$ can be written as:
+$$
+x_1 \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix} +
+x_2 \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix} +
+x_3 \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}
+=
+\mathbf{x}
+$$
+
+---
+
+### Standard Basis Vectors
+
+::: {.callout-note title="Definition: Standard Basis"}
+The **standard basis vectors** in $\mathbb{R}^n$ are:
+$$
+\mathbf{e}_1 = \begin{bmatrix} 1 \\ 0 \\ \vdots \\ 0 \end{bmatrix}, \quad
+\mathbf{e}_2 = \begin{bmatrix} 0 \\ 1 \\ \vdots \\ 0 \end{bmatrix}, \quad
+\cdots, \quad
+\mathbf{e}_n = \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 1 \end{bmatrix}
+$$
+Each $\mathbf{e}_i$ has a 1 in the $i$th position and 0 elsewhere.
+:::
+
+**Remark 8:** Any $\mathbf{x} \in \mathbb{R}^n$ can be written as a linear combination:
+$$
+\mathbf{x} = x_1 \mathbf{e}_1 + x_2 \mathbf{e}_2 + \cdots + x_n \mathbf{e}_n
+$$
+
+---
+
+### Row Vectors and Transpose
+
+::: {.callout-note title="Definition: Row Vector"}
+A matrix in $\mathbb{R}^{1 \times n}$ with one row is called a **row vector**.
+:::
+
+**Remark 9:** If $\mathbf{x} \in \mathbb{R}^n$, then
+$$
+\mathbf{x}^T = \begin{bmatrix} x_1 & x_2 & \cdots & x_n \end{bmatrix}
+$$
+is a row vector in $\mathbb{R}^{1 \times n}$.
+
+---
+
+### Example 11
+
+If
+$$
+\mathbf{x} = \begin{bmatrix} 1 \\ -4 \end{bmatrix}
+$$
+then
+$$
+\mathbf{x}^T = \begin{bmatrix} 1 & -4 \end{bmatrix}
+$$
+
+So every row vector is the transpose of a column vector.
+
+---
+
+### Dot Product (Row-by-Column Product)
+
+::: {.callout-note title="Definition: Dot Product"}
+Given vectors $\mathbf{x}, \mathbf{y} \in \mathbb{R}^n$, the **dot product** (or row-by-column product) is defined as:
+$$
+\mathbf{x}^T \mathbf{y} =
+\begin{bmatrix} x_1 & x_2 & \cdots & x_n \end{bmatrix}
+\begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix}
+=
+x_1 y_1 + x_2 y_2 + \cdots + x_n y_n
+$$
+:::
+
+**Remark 10:** The dot product $\mathbf{x}^T \mathbf{y}$ is a scalar and is also known as the **inner product**.
+
+---
+
+### Example 12
+
+**Exercise:** Compute the dot product $\mathbf{x}^T \mathbf{y}$ where
+$$
+\mathbf{x} = \begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix}, \quad
+\mathbf{y} = \begin{bmatrix} 1 \\ -1 \\ 1 \end{bmatrix}
+$$
+
+::: {.callout-tip collapse=true title="Show computation"}
+Compute:
+$$
+\mathbf{x}^T \mathbf{y} = 1(1) + 2(-1) + 3(1) = 1 - 2 + 3 = 2
+$$
+
+So the dot product is:
+$$
+\mathbf{x}^T \mathbf{y} = 2
+$$
+:::
+
+---
+
+### Proposition 3: Properties of the Dot Product
+
+::: {.callout-note title="Proposition 3: Dot Product Identities"}
+For all $\mathbf{x}, \mathbf{y}, \mathbf{z} \in \mathbb{R}^n$ and scalars $s, t \in \mathbb{R}$:
+
+::: columns
+- $\mathbf{x}^T \mathbf{y} = \mathbf{y}^T \mathbf{x}$
+- $\mathbf{x}^T (s \mathbf{y} + t \mathbf{z}) = s \mathbf{x}^T \mathbf{y} + t \mathbf{x}^T \mathbf{z}$
+- $(s \mathbf{y} + t \mathbf{z})^T \mathbf{x} = s \mathbf{y}^T \mathbf{x} + t \mathbf{z}^T \mathbf{x}$
+- $\mathbf{e}_i^T \mathbf{x} = \mathbf{x}^T \mathbf{e}_i = x_i$
+- $\mathbf{0}^T \mathbf{x} = \mathbf{x}^T \mathbf{0} = 0$
+- $\mathbf{x}^T \mathbf{x} \geq 0$, and $\mathbf{x}^T \mathbf{x} = 0$ only if $\mathbf{x} = \mathbf{0}$
+:::
+:::
+
+---
+
+### Example 13
+
+**Exercise:** Justify part (2) of Proposition 3:
+$$
+\mathbf{x}^T (s \mathbf{y} + t \mathbf{z}) = s \mathbf{x}^T \mathbf{y} + t \mathbf{x}^T \mathbf{z}
+$$
+
+::: {.callout-tip collapse=true title="Show justification"}
+Let:
+$$
+\mathbf{x} = \begin{bmatrix} x_1 \\ \vdots \\ x_n \end{bmatrix}, \quad
+\mathbf{y} = \begin{bmatrix} y_1 \\ \vdots \\ y_n \end{bmatrix}, \quad
+\mathbf{z} = \begin{bmatrix} z_1 \\ \vdots \\ z_n \end{bmatrix}
+$$
+
+Then:
+$$
+\mathbf{x}^T (s \mathbf{y} + t \mathbf{z}) =
+\sum_{i=1}^n x_i (s y_i + t z_i) =
+s \sum_{i=1}^n x_i y_i + t \sum_{i=1}^n x_i z_i =
+s \mathbf{x}^T \mathbf{y} + t \mathbf{x}^T \mathbf{z}
+$$
+
+This confirms the identity.
+:::
+
+---
+
+### Matrix-Vector Multiplication
+
+::: {.callout-note title="Definition: Matrix-Vector Product"}
+Let $A \in \mathbb{R}^{m \times n}$ and $\mathbf{x} \in \mathbb{R}^n$.
+
+If the rows of $A$ are $\mathbf{\alpha}_1^T, \dots, \mathbf{\alpha}_m^T$, then:
+$$
+A \mathbf{x} =
+\begin{bmatrix}
+\mathbf{\alpha}_1^T \mathbf{x} \\
+\mathbf{\alpha}_2^T \mathbf{x} \\
+\vdots \\
+\mathbf{\alpha}_m^T \mathbf{x}
+\end{bmatrix}
+$$
+
+Each entry in $A \mathbf{x}$ is a **dot product** of a row of $A$ with the vector $\mathbf{x}$.
+:::
+
+---
+
+### Example 14
+
+**Exercise:** Compute $A \mathbf{x}$ where:
+$$
+A = \begin{bmatrix}
+1 & -1 & 0 \\
+2 & 2 & -3 \\
+4 & -1 & 0 \\
+2 & -2 & 3
+\end{bmatrix}, \quad
+\mathbf{x} = \begin{bmatrix}
+1 \\
+-1 \\
+1
+\end{bmatrix}
+$$
+
+::: {.callout-tip collapse=true title="Show computation"}
+Compute each row dot product:
+
+- Row 1: $1(1) + (-1)(-1) + 0(1) = 1 + 1 = 2$
+- Row 2: $2(1) + 2(-1) + (-3)(1) = 2 - 2 - 3 = -3$
+- Row 3: $4(1) + (-1)(-1) + 0(1) = 4 + 1 = 5$
+- Row 4: $2(1) + (-2)(-1) + 3(1) = 2 + 2 + 3 = 7$
+
+So:
+$$
+A \mathbf{x} = \begin{bmatrix} 2 \\ -3 \\ 5 \\ 7 \end{bmatrix}
+$$
+:::
+
+---
+
+### Proposition 4: Linearity of Matrix-Vector Multiplication
+
+::: {.callout-note title="Proposition 4"}
+Let $A, B \in \mathbb{R}^{m \times n}$, $\mathbf{x}, \mathbf{y} \in \mathbb{R}^n$, and $s, t \in \mathbb{R}$:
+
+1. $A \mathbf{0} = \mathbf{0}$
+2. $A(s \mathbf{x} + t \mathbf{y}) = s A \mathbf{x} + t A \mathbf{y}$
+3. $(sA + tB) \mathbf{x} = s A \mathbf{x} + t B \mathbf{x}$
+:::
+
+**Remark 11:** Property 2 shows that matrix-vector multiplication is a **linear operation**.
+
+**Remark 12:** Property 2 extends to arbitrary linear combinations:
+$$
+A(c_1 \mathbf{v}_1 + \cdots + c_k \mathbf{v}_k) =
+c_1 A \mathbf{v}_1 + \cdots + c_k A \mathbf{v}_k
+$$
+
+**Remark 13:** Proposition 4 can be justified using the dot product identities from Proposition 3.
+
+---
+
+### Example 15
+
+**Exercise:** Use part 2 of Proposition 3 to justify part 2 of Proposition 4:
+$$
+A(s \mathbf{x} + t \mathbf{y}) = s A \mathbf{x} + t A \mathbf{y}
+$$
+
+::: {.callout-tip collapse=true title="Show justification"}
+Each entry of $A \mathbf{x}$ is a dot product of a row of $A$ with $\mathbf{x}$.
+
+So:
+$$
+\mathbf{\alpha}_i^T (s \mathbf{x} + t \mathbf{y}) =
+s \mathbf{\alpha}_i^T \mathbf{x} + t \mathbf{\alpha}_i^T \mathbf{y}
+$$
+
+Stacking these gives:
+$$
+A(s \mathbf{x} + t \mathbf{y}) = s A \mathbf{x} + t A \mathbf{y}
+$$
+:::
+
+---
+
+### Example 16
+
+Let $A \in \mathbb{R}^{3 \times 2}$ and suppose:
+$$
+A \begin{bmatrix} 1 \\ 1 \end{bmatrix} = \begin{bmatrix} 3 \\ 0 \\ 1 \end{bmatrix}, \quad
+A \begin{bmatrix} 1 \\ 2 \end{bmatrix} = \begin{bmatrix} 5 \\ 1 \\ 0 \end{bmatrix}
+$$
+
+**Exercise:** Use the fact that $A \mathbf{x}$ is a linear operation to compute:
+$$
+A \begin{bmatrix} 2 \\ 1 \end{bmatrix}
+$$
+
+::: {.callout-tip collapse=true title="Hint and Solution"}
+Write:
+$$
+\begin{bmatrix} 2 \\ 1 \end{bmatrix}
+= 2 \begin{bmatrix} 1 \\ 1 \end{bmatrix} - \begin{bmatrix} 1 \\ 2 \end{bmatrix}
+$$
+
+Then apply linearity:
+$$
+A \begin{bmatrix} 2 \\ 1 \end{bmatrix}
+= 2 A \begin{bmatrix} 1 \\ 1 \end{bmatrix} - A \begin{bmatrix} 1 \\ 2 \end{bmatrix}
+= 2 \begin{bmatrix} 3 \\ 0 \\ 1 \end{bmatrix} - \begin{bmatrix} 5 \\ 1 \\ 0 \end{bmatrix}
+= \begin{bmatrix} 6 \\ 0 \\ 2 \end{bmatrix} - \begin{bmatrix} 5 \\ 1 \\ 0 \end{bmatrix}
+= \begin{bmatrix} 1 \\ -1 \\ 2 \end{bmatrix}
+$$
+:::
+
+---
+
+### Matrix Form of a Linear System
+
+::: {.callout-note title="Definition: Matrix Form of a Linear System"}
+A system of $m$ linear equations in $n$ variables:
+$$
+\begin{aligned}
+a_{11} x_1 + a_{12} x_2 + \cdots + a_{1n} x_n &= b_1 \\
+a_{21} x_1 + a_{22} x_2 + \cdots + a_{2n} x_n &= b_2 \\
+\vdots \hspace{2cm} & \vdots \\
+a_{m1} x_1 + a_{m2} x_2 + \cdots + a_{mn} x_n &= b_m
+\end{aligned}
+$$
+
+can be written as:
+$$
+A \mathbf{x} = \mathbf{b}
+$$
+
+where:
+$$
+A = \begin{bmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} & \cdots & a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{m1} & a_{m2} & \cdots & a_{mn}
+\end{bmatrix}, \quad
+\mathbf{x} = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \quad
+\mathbf{b} = \begin{bmatrix} b_1 \\ b_2 \\ \vdots \\ b_m \end{bmatrix}
+$$
+
+We call:
+- $A$ the **coefficient matrix**
+- $\mathbf{x}$ the **solution vector**
+- $\mathbf{b}$ the **right-hand side vector**
+:::
+
+---
+
+### Example 17
+
+Consider the system:
+$$
+\begin{aligned}
+2x_1 + x_2 + x_3 &= 4 \\
+-4x_1 - x_2 + x_3 &= 2
+\end{aligned}
+$$
+
+**(a)** Write the system as a matrix equation $A \mathbf{x} = \mathbf{b}$
+
+::: {.callout-tip collapse=true title="Show part (a) solution"}
+We have:
+$$
+A = \begin{bmatrix}
+2 & 1 & 1 \\
+-4 & -1 & 1
+\end{bmatrix}, \quad
+\mathbf{x} = \begin{bmatrix} x_1 \\ x_2 \\ x_3 \end{bmatrix}, \quad
+\mathbf{b} = \begin{bmatrix} 4 \\ 2 \end{bmatrix}
+$$
+:::
+
+**(b)** Show that both $\begin{bmatrix} 1 \\ -2 \\ 4 \end{bmatrix}$ and $\begin{bmatrix} -1 \\ 4 \\ 2 \end{bmatrix}$ are solutions.
+
+::: {.callout-tip collapse=true title="Show part (b) solution"}
+Substitute into $A \mathbf{x}$ and verify both give $\mathbf{b}$:
+- $A \begin{bmatrix} 1 \\ -2 \\ 4 \end{bmatrix} = \begin{bmatrix} 4 \\ 2 \end{bmatrix}$
+- $A \begin{bmatrix} -1 \\ 4 \\ 2 \end{bmatrix} = \begin{bmatrix} 4 \\ 2 \end{bmatrix}$
+
+Both are valid solutions.
+:::
+
+**(c)** For what values of $s$ and $t$ is the combination
+$$
+s \begin{bmatrix} 1 \\ -2 \\ 4 \end{bmatrix} +
+t \begin{bmatrix} -1 \\ 4 \\ 2 \end{bmatrix}
+$$
+also a solution?
+
+::: {.callout-tip collapse=true title="Show part (c) solution"}
+Because matrix-vector multiplication is linear, any combination is a solution **if and only if**:
+$$
+s + t = 1
+$$
+
+That ensures:
+$$
+A(s \mathbf{x}_1 + t \mathbf{x}_2) = s A \mathbf{x}_1 + t A \mathbf{x}_2 = s \mathbf{b} + t \mathbf{b} = \mathbf{b}
+$$
+:::
+
+**(d)** Choose $s = 2$, $t = -1$, and verify the result is a solution.
+
+::: {.callout-tip collapse=true title="Show part (d) computation"}
+Compute:
+$$
+2 \begin{bmatrix} 1 \\ -2 \\ 4 \end{bmatrix}
+- \begin{bmatrix} -1 \\ 4 \\ 2 \end{bmatrix}
+= \begin{bmatrix} 2 \\ -4 \\ 8 \end{bmatrix}
++ \begin{bmatrix} 1 \\ -4 \\ -2 \end{bmatrix}
+= \begin{bmatrix} 3 \\ -8 \\ 6 \end{bmatrix}
+$$
+
+Then check:
+$$
+A \begin{bmatrix} 3 \\ -8 \\ 6 \end{bmatrix} = \mathbf{b}
+$$
+
+Yes — it still solves the system.
+:::
+
+**(e)** How many solutions does this system have?
+
+::: {.callout-tip collapse=true title="Answer"}
+An infinite number — every affine combination of the two known solutions (with $s + t = 1$) is also a solution.
+:::
+
+---
+
+**Remark 14:** A combination $s \mathbf{x} + t \mathbf{y}$ such that $s + t = 1$ is called an **affine combination**.
+
+---
+
+### Proposition 5
+
+::: {.callout-note title="Proposition 5"}
+Any **consistent linear system** has either:
+- One unique solution, or  
+- Infinitely many solutions  
+:::
+
+---
+
+### Example 18
+
+**Exercise:** Justify Proposition 5 using the linearity of $A \mathbf{x}$.
+
+::: {.callout-tip collapse=true title="Show reasoning"}
+If $\mathbf{x}_1$ and $\mathbf{x}_2$ are both solutions of $A \mathbf{x} = \mathbf{b}$, then any affine combination:
+$$
+s \mathbf{x}_1 + (1 - s) \mathbf{x}_2
+$$
+is also a solution. So:
+
+- If there's more than one solution, there must be infinitely many.
+- Otherwise, the solution is unique.
+
+This proves the result.
+:::
+

@@ -1,0 +1,302 @@
+---
+title: "Chapter 1: Linear Systems and Matrices"
+format: html
+jupyter: python3
+---
+
+## Introduction to Linear Systems
+
+### Linear Equations
+
+The solution set of the equation
+
+$$
+2x + y = 1
+$$
+
+is a **line** in the $xy$-plane.
+
+```{python}
+#| label: fig-line-2xplusy
+#| fig-cap: "The line $2x + y = 1$"
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(-5, 5, 400)
+y = 1 - 2 * x
+
+plt.figure(figsize=(6, 4))
+plt.plot(x, y, label=r"$2x + y = 1$")
+plt.axhline(0, color='gray', lw=0.5)
+plt.axvline(0, color='gray', lw=0.5)
+plt.grid(True)
+plt.title("Line in $\mathbb{R}^2$")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.legend()
+plt.show()
+```
+
+The solution set of the equation
+
+$$
+x + y + z = 2
+$$
+
+is a **plane** in $\mathbb{R}^3$.
+
+```{python}
+#| label: fig-plane-xyz
+#| fig-cap: "The plane $x + y + z = 2$"
+from mpl_toolkits.mplot3d import Axes3D
+
+fig = plt.figure(figsize=(7, 5))
+ax = fig.add_subplot(111, projection='3d')
+
+xx, yy = np.meshgrid(np.linspace(-5, 5, 20), np.linspace(-5, 5, 20))
+zz = 2 - xx - yy
+ax.plot_surface(xx, yy, zz, alpha=0.5, color='cyan', edgecolor='gray')
+
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+ax.set_zlabel('z')
+ax.set_title('Plane $x + y + z = 2$')
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-definition title="Definition: Linear Equation"}
+
+For given constants $a_1, a_2, \ldots, a_n, b \in \mathbb{R}$, a **linear equation** is:
+
+$$
+a_1 x_1 + a_2 x_2 + \cdots + a_n x_n = b
+$$
+
+**Exercise:** Which of the following are linear equations?
+
+- $2x_1 + 3x_2 = 4$  
+- $x_1 - x_1 x_2 = 2$  
+- $y_1 - 4y_2 + 2y_3 = 0$  
+- $w - x - 3y + z = 5$  
+- $x - 2\sqrt{y} = 4$
+
+::: {.callout-tip collapse=true title="Show Answer"}
+✅ Linear:
+
+- $2x_1 + 3x_2 = 4$  
+- $y_1 - 4y_2 + 2y_3 = 0$  
+- $w - x - 3y + z = 5$
+
+❌ Nonlinear:
+
+- $x_1 - x_1 x_2 = 2$ (contains product of variables)  
+- $x - 2\sqrt{y} = 4$ (contains square root)
+:::
+
+### Cubic Polynomial Interpolation
+
+We seek a cubic polynomial
+
+$$
+f(x) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3
+$$
+
+that passes through:
+
+$$
+(-2, 3), \quad (-1, -6), \quad (1, 0), \quad (3, -2)
+$$
+
+```{python}
+#| label: fig-interpolation-points
+#| fig-cap: "Points for interpolation"
+points = [(-2, 3), (-1, -6), (1, 0), (3, -2)]
+x_pts, y_pts = zip(*points)
+
+plt.figure(figsize=(6, 4))
+plt.scatter(x_pts, y_pts, color="black")
+for x, y in points:
+    plt.annotate(f"({x},{y})", (x + 0.2, y))
+plt.title("Interpolation Points")
+plt.grid(True)
+plt.xlabel("x")
+plt.ylabel("y")
+plt.show()
+```
+
+Plugging each point into $f(x)$ gives:
+
+$$
+\begin{aligned}
+\beta_1 - 2\beta_2 + 4\beta_3 - 8\beta_4 &= 3 \\
+\beta_1 - \beta_2 + \beta_3 - \beta_4 &= -6 \\
+\beta_1 + \beta_2 + \beta_3 + \beta_4 &= 0 \\
+\beta_1 + 3\beta_2 + 9\beta_3 + 27\beta_4 &= -2
+\end{aligned}
+$$
+
+A solution:
+
+$$
+\beta_1 = -5, \quad \beta_2 = 4, \quad \beta_3 = 2, \quad \beta_4 = -1
+$$
+
+```{python}
+#| label: fig-cubic-solution
+#| fig-cap: "Fitted cubic polynomial"
+def f(x): return -5 + 4*x + 2*x**2 - x**3
+
+x_vals = np.linspace(-3, 4, 300)
+y_vals = f(x_vals)
+
+plt.figure(figsize=(6, 4))
+plt.plot(x_vals, y_vals, label=r"$f(x) = -5 + 4x + 2x^2 - x^3$")
+plt.scatter(x_pts, y_pts, color="red", zorder=5)
+plt.legend()
+plt.grid(True)
+plt.title("Interpolating Cubic Polynomial")
+plt.xlabel("x")
+plt.ylabel("f(x)")
+plt.show()
+```
+
+We will explore the underdetermined and overdetermined cases next.
+
+### Underdetermined System Example
+
+Now suppose we use only the first 3 points:
+
+$$
+(-2, 3), \quad (-1, -6), \quad (1, 0)
+$$
+
+The resulting system (with 3 equations and 4 unknowns) is **underdetermined**. It has **infinitely many** solutions:
+
+$$
+\beta_1 = -7 - 2t, \quad \beta_2 = 3 - t, \quad \beta_3 = 4 + 2t, \quad \beta_4 = t
+$$
+
+```{python}
+#| label: fig-underdetermined-family
+#| fig-cap: "Cubic fits for $t = -1, 0, 1$"
+def cubic_family(x, t):
+    b1 = -7 - 2*t
+    b2 = 3 - t
+    b3 = 4 + 2*t
+    b4 = t
+    return b1 + b2*x + b3*x**2 + b4*x**3
+
+x_vals = np.linspace(-3, 2, 200)
+t_vals = [-1, 0, 1]
+colors = ['blue', 'green', 'orange']
+labels = [r"$t = -1$", r"$t = 0$", r"$t = 1$"]
+
+plt.figure(figsize=(6, 4))
+for t, c, lbl in zip(t_vals, colors, labels):
+    plt.plot(x_vals, cubic_family(x_vals, t), label=lbl, color=c)
+plt.scatter(x_pts[:3], y_pts[:3], color='black', zorder=5)
+plt.legend()
+plt.grid(True)
+plt.title("Family of Cubics Through 3 Points")
+plt.xlabel("x")
+plt.ylabel("f(x)")
+plt.show()
+```
+
+---
+
+### Overdetermined System Example
+
+Try fitting a **quadratic polynomial** to the 4 points:
+
+$$
+f(x) = \beta_1 + \beta_2 x + \beta_3 x^2
+$$
+
+The resulting system (4 equations, 3 unknowns):
+
+$$
+\begin{aligned}
+\beta_1 - 2\beta_2 + 4\beta_3 &= 3 \\
+\beta_1 - \beta_2 + \beta_3 &= -6 \\
+\beta_1 + \beta_2 + \beta_3 &= 0 \\
+\beta_1 + 3\beta_2 + 9\beta_3 &= -2
+\end{aligned}
+$$
+
+Trying to solve this leads to a contradiction:
+
+$$
+\beta_1 - \beta_2 + \beta_3 = 18 \neq -6
+$$
+
+🔴 No quadratic polynomial fits all 4 points. The system is **inconsistent**.
+
+---
+
+::: {.callout-definition title="Definition: Linear System"}
+
+A system of $m$ linear equations in $n$ variables $x_1, x_2, \ldots, x_n$ is called a **linear system**.
+
+$$
+\begin{aligned}
+a_{11}x_1 + a_{12}x_2 + \cdots + a_{1n}x_n &= b_1 \\
+a_{21}x_1 + a_{22}x_2 + \cdots + a_{2n}x_n &= b_2 \\
+\vdots \\
+a_{m1}x_1 + a_{m2}x_2 + \cdots + a_{mn}x_n &= b_m
+\end{aligned}
+$$
+
+- An **assignment** of the variables $x_1, x_2, \ldots, x_n$ is a _solution_ of the linear system if it satisfies **all** $m$ equations simultaneously.  
+- A linear system that has **at least one solution** is called **consistent**.  
+- A linear system with **no solution** is called **inconsistent**.  
+- A system is **underdetermined** if there are **more variables than equations** ($n > m$).  
+- A system is **overdetermined** if there are **more equations than variables** ($m > n$).  
+
+:::
+
+### Questions We'll Be Able to Answer
+
+1. What are the possible sizes of a solution set?
+2. How do we tell if a system is consistent?
+3. How can we tell if the solution is unique?
+4. How do we find all solutions?
+
+To answer these questions we will first need to learn about \textbf{matrices} and \textbf{vectors}.
+For example, we can write a linear system much more consisely as
+
+$$
+A \mathbf{x} = \mathbf{b}
+$$
+
+where:
+
+$$
+A = \begin{bmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} & \cdots & a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{m1} & a_{m2} & \cdots & a_{mn}
+\end{bmatrix}, \quad
+\mathbf{x} =
+\begin{bmatrix}
+x_1 \\
+x_2 \\
+\vdots \\
+x_n
+\end{bmatrix}, \quad
+\mathbf{b} =
+\begin{bmatrix}
+b_1 \\
+b_2 \\
+\vdots \\
+b_m
+\end{bmatrix}
+$$
+
+- $A$ is called the **coefficient matrix**
+- $\mathbf{x}$ is called the **solution vector**
+- $\mathbf{b}$ is the **right-and-side vector**
+
+---

@@ -1,0 +1,31 @@
+---
+title: "Preface"
+format:
+  html:
+    toc: false
+    title-block-style: default
+site: 
+  output-dir: _site
+---
+
+**Copyright**: © 2025 Jason R. Wilson. All rights reserved.  
+This book is licensed under the Creative Commons Attribution 4.0 International License (CC BY 4.0).  
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+---
+
+Welcome to **Mathematics of Data Science** — a modern, computational introduction to the math that underpins today's data-driven world.
+
+In particular, this book provides an introduction to **linear algebra** and **multivariable calculus** in the context of building a mathematical foundation for data science and machine learning.
+
+Each chapter includes Python-based demonstrations and interactive elements, designed to support both understanding and exploration.
+
+It is important to note that this book is not intended to teach basic Python programming. There are already many excellent resources available for learning basic Python. Instead, our focus here is on using Python as a tool for solving mathematical problems that arise in data science and machine learning.
+
+---
+
+## 📘 Chapter 1: Linear Systems and Matrices
+
+- [Section 1.1: Introduction to Linear Systems](chapter1/section1_intro_linear_systems.qmd)
+
+
