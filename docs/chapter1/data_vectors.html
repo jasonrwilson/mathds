@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.31">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jason R. Wilson">
+
+<title>Chapter 1: Data and Vectors – Mathematics of Data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../index.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-485d01fc63b59abcd3ee1bf1e8e2748d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script type="text/javascript">
+window.PlotlyConfig = {MathJaxConfig: 'local'};
+if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
+if (typeof require !== 'undefined') {
+require.undef("plotly");
+requirejs.config({
+    paths: {
+        'plotly': ['https://cdn.plot.ly/plotly-2.12.1.min']
+    }
+});
+require(['plotly'], function(Plotly) {
+    window._Plotly = Plotly;
+});
+}
+</script>
+
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapter1/data_vectors.html">Unit 1: Data, Vectors, and Matrices</a></li><li class="breadcrumb-item"><a href="../chapter1/data_vectors.html"><span class="chapter-title">Chapter 1: Data and Vectors</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Mathematics of Data</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Unit 1: Data, Vectors, and Matrices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapter1/data_vectors.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Chapter 1: Data and Vectors</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#palmer-penguins" id="toc-palmer-penguins" class="nav-link active" data-scroll-target="#palmer-penguins">Palmer Penguins</a>
+  <ul>
+  <li><a href="#cleaning-and-filtering-data" id="toc-cleaning-and-filtering-data" class="nav-link" data-scroll-target="#cleaning-and-filtering-data">Cleaning and Filtering Data</a></li>
+  <li><a href="#accessing-table-entries" id="toc-accessing-table-entries" class="nav-link" data-scroll-target="#accessing-table-entries">Accessing Table Entries</a></li>
+  </ul></li>
+  <li><a href="#summary-statistics" id="toc-summary-statistics" class="nav-link" data-scroll-target="#summary-statistics">Summary Statistics</a>
+  <ul>
+  <li><a href="#numerical-features" id="toc-numerical-features" class="nav-link" data-scroll-target="#numerical-features">Numerical Features</a></li>
+  <li><a href="#categorical-features" id="toc-categorical-features" class="nav-link" data-scroll-target="#categorical-features">Categorical Features</a></li>
+  </ul></li>
+  <li><a href="#visualization" id="toc-visualization" class="nav-link" data-scroll-target="#visualization">Visualization</a>
+  <ul>
+  <li><a href="#histograms-and-box-plots" id="toc-histograms-and-box-plots" class="nav-link" data-scroll-target="#histograms-and-box-plots">Histograms and Box Plots</a></li>
+  <li><a href="#scatter-plots-and-clustering" id="toc-scatter-plots-and-clustering" class="nav-link" data-scroll-target="#scatter-plots-and-clustering">Scatter Plots and Clustering</a></li>
+  <li><a href="#interactive-3d-scatter-plots" id="toc-interactive-3d-scatter-plots" class="nav-link" data-scroll-target="#interactive-3d-scatter-plots">Interactive 3D Scatter Plots</a></li>
+  </ul></li>
+  <li><a href="#prediction-and-vectors" id="toc-prediction-and-vectors" class="nav-link" data-scroll-target="#prediction-and-vectors">Prediction and Vectors</a></li>
+  <li><a href="#remaining-topics" id="toc-remaining-topics" class="nav-link" data-scroll-target="#remaining-topics">Remaining Topics</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapter1/data_vectors.html">Unit 1: Data, Vectors, and Matrices</a></li><li class="breadcrumb-item"><a href="../chapter1/data_vectors.html"><span class="chapter-title">Chapter 1: Data and Vectors</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Chapter 1: Data and Vectors</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jason R. Wilson </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="palmer-penguins" class="level3">
+<h3 class="anchored" data-anchor-id="palmer-penguins">Palmer Penguins</h3>
+<p>In this section, we begin by exploring the Palmer penguin dataset, which contains measurements from several species of penguins collected in Antarctica.</p>
+<p>The Palmer penguin dataset contains characteristics or <strong>features</strong> for penguins representing three species — Adelie, Gentoo, and Chinstrap — collected from three islands in the Palmer Archipelago, Antarctica. It includes multiple physical measurements for each penguin, such as:</p>
+<ul>
+<li>Flipper length (mm)<br>
+</li>
+<li>Bill length (mm)<br>
+</li>
+<li>Bill depth (mm)<br>
+</li>
+<li>Body mass (g)</li>
+</ul>
+<p>The above measurements are called <strong>numerical features</strong>. The dataset also includes non-numerical features such as <code>"species"</code> and <code>"island"</code> that we call <strong>categorical features</strong>.</p>
+<p>Together, these features — both numerical and categorical — describe each individual penguin in the dataset. They allow us to compare penguins, detect patterns, and make predictions.</p>
+<p>To start working with the penguin dataset in table form, we will use the Python package <code>pandas</code>, which is widely used in data science.</p>
+<p>In pandas, a dataset is stored as a <strong>data frame</strong> — a table of data where:</p>
+<ul>
+<li>Each <strong>row</strong> of the data frame contains the features for a particular penguin.<br>
+</li>
+<li>Each <strong>column</strong> of the data frame contains the values of a particular feature — such as flipper length or body mass — across all penguins.</li>
+</ul>
+<p>Here is some code that loads in the dataset as the data frame <code>penguins_raw</code> and prints out the number of penguins, the number of features, and the name of each feature:</p>
+<div id="10a9c371" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the dataset from Seaborn's GitHub repository</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/mwaskom/seaborn-data/master/penguins.csv"</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>penguins_raw <span class="op">=</span> pd.read_csv(url)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Print number of samples (rows) and features (columns)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>rows, cols <span class="op">=</span> penguins_raw.shape</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Number of penguins:"</span>, rows)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Number of features:"</span>, cols)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"All features in the dataset:"</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">list</span>(penguins_raw.columns))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of penguins: 344
+Number of features: 7
+All features in the dataset:
+['species', 'island', 'bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g', 'sex']</code></pre>
+</div>
+</div>
+<section id="cleaning-and-filtering-data" class="level4">
+<h4 class="anchored" data-anchor-id="cleaning-and-filtering-data">Cleaning and Filtering Data</h4>
+<p>Real-world data is often messy. In this case, some rows are missing values — for example, a penguin might have been weighed but not measured. To keep things simple for now, we’ll remove any rows that contain missing values and put the result in the new data frame <code>penguins_clean</code>.</p>
+<div id="c52ce315" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>penguins_clean <span class="op">=</span> penguins_raw.dropna()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Number of penguins (after data cleaning):"</span>,<span class="bu">len</span>(penguins_clean))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of penguins (after data cleaning): 333</code></pre>
+</div>
+</div>
+<p>For now we will focus on five features that describe the shape and size of each penguin and its species:</p>
+<ul>
+<li>Bill length</li>
+<li>Bill depth</li>
+<li>Flipper length</li>
+<li>Body mass</li>
+<li>Species</li>
+</ul>
+<p>We’ll store these features in a new data frame called <code>penguins</code> and print the first few rows to get a sense of what we’re working with.</p>
+<div id="dd773096" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep only the features we want to focus on</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>feature_columns <span class="op">=</span> [<span class="st">"bill_length_mm"</span>, <span class="st">"bill_depth_mm"</span>, <span class="st">"flipper_length_mm"</span>, <span class="st">"body_mass_g"</span>, <span class="st">"species"</span>]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>penguins <span class="op">=</span> penguins_clean[feature_columns]</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the first few rows our dataset</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(penguins.head())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   bill_length_mm  bill_depth_mm  flipper_length_mm  body_mass_g species
+0            39.1           18.7              181.0       3750.0  Adelie
+1            39.5           17.4              186.0       3800.0  Adelie
+2            40.3           18.0              195.0       3250.0  Adelie
+4            36.7           19.3              193.0       3450.0  Adelie
+5            39.3           20.6              190.0       3650.0  Adelie</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Indexing in Python">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Indexing in Python
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Python uses <strong>0-based indexing</strong>, which means counting starts at 0, not 1.</p>
+<p>For example, the first penguin in the table has index <span class="math inline">\(0\)</span>, the second penguin has index <span class="math inline">\(1\)</span>, and so on.</p>
+</div>
+</div>
+</section>
+<section id="accessing-table-entries" class="level4">
+<h4 class="anchored" data-anchor-id="accessing-table-entries">Accessing Table Entries</h4>
+<p><strong>Single entries</strong> of the pandas data frame <code>penguins</code> give us the value of a specific feature for one of the penguins.</p>
+<p>To access a single entry in the table:</p>
+<ol type="1">
+<li><strong>Select the feature</strong> (e.g., <code>"flipper_length_mm"</code>)<br>
+</li>
+<li><strong>Select the penguin</strong> by its index (starting from 0)</li>
+</ol>
+<p>For example, the code below prints the <strong>flipper length of the first penguin</strong>.</p>
+<div id="5a472be8" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>flipper_length_0 <span class="op">=</span> penguins[<span class="st">"flipper_length_mm"</span>].iloc[<span class="dv">0</span>]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Flipper length of the first penguin:"</span>, flipper_length_0, <span class="st">"mm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Flipper length of the first penguin: 181.0 mm</code></pre>
+</div>
+</div>
+<p>Here’s a breakdown of what <code>penguins["flipper_length_mm"].iloc[0]</code> means:</p>
+<ul>
+<li><code>penguins["flipper_length_mm"]</code> gives us the entire column of flipper lengths. In pandas, this column is called a <strong>Series</strong> — a one-dimensional object with one value per penguin.</li>
+<li><code>.iloc[0]</code> selects the first entry in that Series — in this case, the flipper length of the first penguin.</li>
+</ul>
+<p>Now that we know how to access individual entries in the dataset, let’s compute an average.</p>
+<blockquote class="blockquote">
+<p><strong>Exercise:</strong> Compute the average <strong>bill depth</strong> of the first 3 penguins in the dataset. Use <code>round(..., 1)</code> to round the average to one decimal place.</p>
+</blockquote>
+<div class="callout callout-style-default callout-tip callout-titled" title="Show Solution">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Show Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>We’ll extract the first three values from the <code>"bill_depth_mm"</code> column, then compute their average:</p>
+<div id="78fa3416" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>d0 <span class="op">=</span> penguins[<span class="st">"bill_depth_mm"</span>].iloc[<span class="dv">0</span>]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>d1 <span class="op">=</span> penguins[<span class="st">"bill_depth_mm"</span>].iloc[<span class="dv">1</span>]</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>d2 <span class="op">=</span> penguins[<span class="st">"bill_depth_mm"</span>].iloc[<span class="dv">2</span>]</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>average_depth <span class="op">=</span> <span class="bu">round</span>((d0 <span class="op">+</span> d1 <span class="op">+</span> d2) <span class="op">/</span> <span class="dv">3</span>, <span class="dv">1</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Average bill depth of first 3 penguins:"</span>, average_depth, <span class="st">"mm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Average bill depth of first 3 penguins: 18.0 mm</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="summary-statistics" class="level3">
+<h3 class="anchored" data-anchor-id="summary-statistics">Summary Statistics</h3>
+<p>So far we’ve worked with individual entries in a data frame — like the bill depth of the first penguin.</p>
+<p>Sometimes we want to compute across an entire feature. For example, to find the <strong>average body mass</strong> across all penguins, we need the body mass for <em>every</em> penguin — not just one.</p>
+<section id="numerical-features" class="level4">
+<h4 class="anchored" data-anchor-id="numerical-features">Numerical Features</h4>
+<p>We can use built-in pandas methods like <code>.mean()</code>, <code>.median()</code>, <code>.std()</code>, <code>.min()</code>, and <code>.max()</code> to compute summary statistics for a single feature stored as a pandas series.</p>
+<div id="04e2d757" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>body_mass <span class="op">=</span> penguins[<span class="st">"body_mass_g"</span>]</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Average body mass:"</span>, <span class="bu">round</span>(body_mass.mean(), <span class="dv">1</span>), <span class="st">"g"</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Standard deviation of body mass:"</span>, <span class="bu">round</span>(body_mass.std(), <span class="dv">1</span>), <span class="st">"g"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Median body mass:"</span>, body_mass.median(), <span class="st">"g"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Minimum body mass:"</span>, body_mass.<span class="bu">min</span>(), <span class="st">"g"</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Maximum body mass:"</span>, body_mass.<span class="bu">max</span>(), <span class="st">"g"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Average body mass: 4207.1 g
+Standard deviation of body mass: 805.2 g
+Median body mass: 4050.0 g
+Minimum body mass: 2700.0 g
+Maximum body mass: 6300.0 g</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Exercise:</strong> Print the average, median, standard deviation, minimum, and maximum of the <strong>bill length</strong> feature.</p>
+</blockquote>
+<div class="callout callout-style-default callout-tip callout-titled" title="Show Solution">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Show Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="52517b0e" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>bill_length <span class="op">=</span> penguins[<span class="st">"bill_length_mm"</span>]</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Average bill length:"</span>, <span class="bu">round</span>(bill_length.mean(), <span class="dv">1</span>), <span class="st">"mm"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Median bill length:"</span>, bill_length.median(), <span class="st">"mm"</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Standard deviation of bill length:"</span>, <span class="bu">round</span>(bill_length.std(), <span class="dv">1</span>), <span class="st">"mm"</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Minimum bill length:"</span>, bill_length.<span class="bu">min</span>(), <span class="st">"mm"</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Maximum bill length:"</span>, bill_length.<span class="bu">max</span>(), <span class="st">"mm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Average bill length: 44.0 mm
+Median bill length: 44.5 mm
+Standard deviation of bill length: 5.5 mm
+Minimum bill length: 32.1 mm
+Maximum bill length: 59.6 mm</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>In addition to functions like <code>.max()</code> and <code>.min()</code>, which return the <strong>largest or smallest value</strong> in a pandas series, there are also functions that tell us <strong>where</strong> those values occur.</p>
+<p>For example: - <code>.idxmax()</code> returns the <strong>row</strong> of the maximum value in a series. - <code>.idxmin()</code> returns the <strong>row</strong> of the minimum value in a series.</p>
+<p>These are useful when we want to identify, for example, which penguin has the <strong>longest bill</strong> or the <strong>shortest flippers</strong>.</p>
+<div id="37ab1a52" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the row of the penguin with the longest bill</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>longest_bill_row <span class="op">=</span> penguins[<span class="st">"bill_length_mm"</span>].idxmax()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Row of penguin with longest bill:"</span>, longest_bill_row)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Row of penguin with longest bill: 253</code></pre>
+</div>
+</div>
+<p>We can then extract the full row — that is, all features for that penguin:</p>
+<div id="693f55b7" class="cell" data-execution_count="9">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>longest_bill_features <span class="op">=</span> penguins.loc[longest_bill_row]</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Features of the penguin with the longest bill:"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(longest_bill_features)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Features of the penguin with the longest bill:
+bill_length_mm         59.6
+bill_depth_mm          17.0
+flipper_length_mm     230.0
+body_mass_g          6050.0
+species              Gentoo
+Name: 253, dtype: object</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Exercise:</strong> Find the penguin with the <strong>shortest flippers</strong>. Then extract and print the full row of features for that penguin.</p>
+</blockquote>
+<div class="callout callout-style-default callout-tip callout-titled" title="Show Solution">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Show Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="938cc255" class="cell" data-execution_count="10">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the row of the penguin with the shortest flippers</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>shortest_flippers_row <span class="op">=</span> penguins[<span class="st">"flipper_length_mm"</span>].idxmin()</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Row of penguin with shortest flippers:"</span>,shortest_flippers_row)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract and print the row</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>shortest_flippers_features <span class="op">=</span> penguins.loc[shortest_flippers_row]</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Features of the penguin with the shortest flippers:"</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(shortest_flippers_features)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Row of penguin with shortest flippers: 28
+Features of the penguin with the shortest flippers:
+bill_length_mm         37.9
+bill_depth_mm          18.6
+flipper_length_mm     172.0
+body_mass_g          3150.0
+species              Adelie
+Name: 28, dtype: object</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="categorical-features" class="level4">
+<h4 class="anchored" data-anchor-id="categorical-features">Categorical Features</h4>
+<p>So far we’ve focused on numerical features like flipper length and body mass. But not all features are numbers — some describe <strong>categories</strong> like species or island.</p>
+<p>To summarize a categorical feature, we often want to <strong>count how many times each category appears</strong>. The <code>.value_counts()</code> function does exactly that.</p>
+<p>For example, to count the number of penguins in each species:</p>
+<div id="3cfdc265" class="cell" data-execution_count="11">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>species_counts <span class="op">=</span> penguins[<span class="st">"species"</span>].value_counts()</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Number of penguins in each species:"</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(species_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of penguins in each species:
+species
+Adelie       146
+Gentoo       119
+Chinstrap     68
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Exercise:</strong> How many penguins are there from each island? How many of each sex are there? Note: To complete this exercise, you will need to use the <code>penguins_clean</code> data frame, which contains all of the original features.</p>
+</blockquote>
+<div class="callout callout-style-default callout-tip callout-titled" title="Show Solution">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Show Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="176daa2b" class="cell" data-execution_count="12">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count by island</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>island_counts <span class="op">=</span> penguins_clean[<span class="st">"island"</span>].value_counts()</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Number of penguins from each island:"</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(island_counts)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a newline</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Count by sex</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>sex_counts <span class="op">=</span> penguins_clean[<span class="st">"sex"</span>].value_counts()</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Number of penguins of each sex:"</span>)</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sex_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of penguins from each island:
+island
+Biscoe       163
+Dream        123
+Torgersen     47
+Name: count, dtype: int64
+
+Number of penguins of each sex:
+sex
+MALE      168
+FEMALE    165
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="visualization" class="level3">
+<h3 class="anchored" data-anchor-id="visualization">Visualization</h3>
+<p>So far we’ve used summary statistics like <code>.mean()</code> and <code>.std()</code> to describe each feature. But sometimes it’s easier to understand the structure of a dataset by <strong>looking at it</strong>.</p>
+<p>In this section, we use plots to explore the <strong>distribution of individual features</strong> and to see how those features vary across species.</p>
+<section id="histograms-and-box-plots" class="level4">
+<h4 class="anchored" data-anchor-id="histograms-and-box-plots">Histograms and Box Plots</h4>
+<p>Let’s start by visualizing a single numerical feature: <strong>flipper length</strong>.</p>
+<p>This histogram shows how flipper length is distributed across all penguins in the dataset.</p>
+<div id="a06e0cc7" class="cell" data-execution_count="13">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>sns.set_theme(style<span class="op">=</span><span class="st">"whitegrid"</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>sns.histplot(data<span class="op">=</span>penguins, x<span class="op">=</span><span class="st">"flipper_length_mm"</span>, bins<span class="op">=</span><span class="dv">20</span>, color<span class="op">=</span><span class="st">"slateblue"</span>, edgecolor<span class="op">=</span><span class="st">"black"</span>)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Histogram of Flipper Length"</span>)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Flipper Length (mm)"</span>)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Count"</span>)</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_vectors_files/figure-html/cell-14-output-1.png" width="589" height="455" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This plot shows the overall shape of the data — but it doesn’t tell us how flipper length varies by <strong>species</strong>.</p>
+<p>Now let’s improve the plot by <strong>color-coding</strong> the data by species and overlaying the histograms. This helps us see how much the species <strong>overlap in flipper length</strong>.</p>
+<div id="c15e54e0" class="cell" data-execution_count="14">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>sns.histplot(</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>penguins,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"flipper_length_mm"</span>,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    hue<span class="op">=</span><span class="st">"species"</span>,</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    bins<span class="op">=</span><span class="dv">20</span>,</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    multiple<span class="op">=</span><span class="st">"layer"</span>,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    palette<span class="op">=</span><span class="st">"Set1"</span>,</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    edgecolor<span class="op">=</span><span class="st">"black"</span>,</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.6</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Histogram of Flipper Length by Species"</span>)</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Flipper Length (mm)"</span>)</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Count"</span>)</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_vectors_files/figure-html/cell-15-output-1.png" width="589" height="455" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>From this version of the plot, we can see that:</p>
+<ul>
+<li><strong>Gentoo penguins</strong> tend to have the longest flippers.</li>
+<li><strong>Adelie and Chinstrap penguins</strong> are more similar, with a lot of overlap.</li>
+</ul>
+<p>This suggests that flipper length can help distinguish species — especially Gentoo — but it’s not enough to fully separate the data on its own.</p>
+<p>Next, we’ll use box plots for each of the four numerical features to compare the distributions more precisely across species. This will help us see whether any single feature fully separates the data.</p>
+<div id="0984e383" class="cell" data-execution_count="15">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>))</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the list of numerical features</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>features <span class="op">=</span> [<span class="st">"bill_length_mm"</span>, <span class="st">"bill_depth_mm"</span>, <span class="st">"flipper_length_mm"</span>, <span class="st">"body_mass_g"</span>]</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a 2x2 grid of box plots</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, feature <span class="kw">in</span> <span class="bu">enumerate</span>(features):</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">2</span>, <span class="dv">2</span>, i <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    sns.boxplot(data<span class="op">=</span>penguins, x<span class="op">=</span><span class="st">"species"</span>, y<span class="op">=</span>feature, hue<span class="op">=</span><span class="st">"species"</span>, palette<span class="op">=</span><span class="st">"Set2"</span>, legend<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"</span><span class="sc">{</span>feature<span class="sc">.</span>replace(<span class="st">'_'</span>, <span class="st">' '</span>)<span class="sc">.</span>title()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Species"</span>)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="va">None</span>)</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_vectors_files/figure-html/cell-16-output-1.png" width="657" height="560" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The box plots show that some features — like <strong>flipper length</strong> — are better than others at distinguishing species, and that <strong>no feature fully separates the data on its own</strong>.</p>
+</section>
+<section id="scatter-plots-and-clustering" class="level4">
+<h4 class="anchored" data-anchor-id="scatter-plots-and-clustering">Scatter Plots and Clustering</h4>
+<p>Previously, we saw that no single feature — like flipper length or bill depth — is enough to fully separate the three penguin species. But what happens when we look at <strong>two features at once</strong>?</p>
+<p>By using a scatter plot where each axis represents a different feature, we can see how penguins cluster in two-dimensional space, and whether certain combinations of features help distinguish the species more clearly.</p>
+<p>The scatter plots below show three such combinations:</p>
+<ul>
+<li>Flipper length vs.&nbsp;Bill length<br>
+</li>
+<li>Flipper length vs.&nbsp;Bill depth<br>
+</li>
+<li>Bill length vs.&nbsp;Bill depth</li>
+</ul>
+<p>Each point represents a penguin and its color indicates the species.</p>
+<div id="61f9f319" class="cell" data-execution_count="16">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the feature pairs</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>feature_pairs <span class="op">=</span> [</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"flipper_length_mm"</span>, <span class="st">"bill_length_mm"</span>),</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"flipper_length_mm"</span>, <span class="st">"bill_depth_mm"</span>),</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"bill_length_mm"</span>, <span class="st">"bill_depth_mm"</span>)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up a 3-row, 1-column layout</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">3</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">15</span>))</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through the feature pairs</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, (x_feature, y_feature) <span class="kw">in</span> <span class="bu">zip</span>(axes, feature_pairs):</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>    sns.scatterplot(</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>        data<span class="op">=</span>penguins,</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span>x_feature,</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span>y_feature,</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>        hue<span class="op">=</span><span class="st">"species"</span>,</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>        palette<span class="op">=</span><span class="st">"Set1"</span>,</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>        edgecolor<span class="op">=</span><span class="st">"black"</span>,</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>        alpha<span class="op">=</span><span class="fl">0.75</span>,</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>        s<span class="op">=</span><span class="dv">60</span>,</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>        ax<span class="op">=</span>ax</span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(x_feature.replace(<span class="st">'_'</span>, <span class="st">' '</span>).title())</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(y_feature.replace(<span class="st">'_'</span>, <span class="st">' '</span>).title())</span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f"</span><span class="sc">{</span>x_feature<span class="sc">.</span>replace(<span class="st">'_'</span>, <span class="st">' '</span>)<span class="sc">.</span>title()<span class="sc">}</span><span class="ss"> vs </span><span class="sc">{</span>y_feature<span class="sc">.</span>replace(<span class="st">'_'</span>, <span class="st">' '</span>)<span class="sc">.</span>title()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>    ax.legend(title<span class="op">=</span><span class="st">"Species"</span>)</span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_vectors_files/figure-html/cell-17-output-1.png" width="656" height="1423" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>These scatter plots show that two of the three feature pairs result in clear species separation into <strong>clusters</strong>.</p>
+<p>A <strong>cluster</strong> is a group of data points that are close together in a plot and share similar characteristics. In this context, each cluster tends to contain penguins from the same species.</p>
+<p>If two species form well-separated clusters in a scatter plot, it means those two species are easy to distinguish using just those two features.</p>
+<blockquote class="blockquote">
+<p><strong>Exercise:</strong> Using scatter plots, compare body mass against each of: flipper length, bill length, and bill depth. Which pair(s) give a clean separation of the data into <strong>species clusters</strong>? Do any pair of features look like they are <strong>linearly related</strong>?</p>
+</blockquote>
+<div class="callout callout-style-default callout-tip callout-titled" title="Show Solution">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Show Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>As we see below, only <strong>bill length vs body mass</strong> results in a strong visual separation between the species.</p></li>
+<li><p>Also, <strong>flipper length and body mass</strong> appear to be <strong>linearly related</strong> —– the points fall roughly along a straight line. As flipper length increases, body mass increases in a steady, consistent way.</p></li>
+</ul>
+<div id="11da4cd2" class="cell" data-execution_count="17">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the feature pairs</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>feature_pairs <span class="op">=</span> [</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"flipper_length_mm"</span>,<span class="st">"body_mass_g"</span>),</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"bill_length_mm"</span>,<span class="st">"body_mass_g"</span>),</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"bill_depth_mm"</span>,<span class="st">"body_mass_g"</span>)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up a 3-row, 1-column layout</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">3</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">15</span>))</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through the feature pairs</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, (x_feature, y_feature) <span class="kw">in</span> <span class="bu">zip</span>(axes, feature_pairs):</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    sns.scatterplot(</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>        data<span class="op">=</span>penguins,</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span>x_feature,</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span>y_feature,</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>        hue<span class="op">=</span><span class="st">"species"</span>,</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>        palette<span class="op">=</span><span class="st">"Set1"</span>,</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>        edgecolor<span class="op">=</span><span class="st">"black"</span>,</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>        alpha<span class="op">=</span><span class="fl">0.75</span>,</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>        s<span class="op">=</span><span class="dv">60</span>,</span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>        ax<span class="op">=</span>ax</span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(x_feature.replace(<span class="st">'_'</span>, <span class="st">' '</span>).title())</span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(y_feature.replace(<span class="st">'_'</span>, <span class="st">' '</span>).title())</span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f"</span><span class="sc">{</span>x_feature<span class="sc">.</span>replace(<span class="st">'_'</span>, <span class="st">' '</span>)<span class="sc">.</span>title()<span class="sc">}</span><span class="ss"> vs </span><span class="sc">{</span>y_feature<span class="sc">.</span>replace(<span class="st">'_'</span>, <span class="st">' '</span>)<span class="sc">.</span>title()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>    ax.legend(title<span class="op">=</span><span class="st">"Species"</span>)</span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_vectors_files/figure-html/cell-18-output-1.png" width="656" height="1423" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="interactive-3d-scatter-plots" class="level4">
+<h4 class="anchored" data-anchor-id="interactive-3d-scatter-plots">Interactive 3D Scatter Plots</h4>
+<p>We can visualize <strong>all five features</strong> at the same time by using:</p>
+<ul>
+<li><strong>3D position</strong> for: flipper length, bill length, and bill depth<br>
+</li>
+<li><strong>Point size</strong> to represent: body mass<br>
+</li>
+<li><strong>Point color</strong> to indicate: species</li>
+</ul>
+<p>This interactive plot lets you explore the full structure of the data:</p>
+<ul>
+<li>Use your mouse to <strong>zoom</strong>, <strong>rotate</strong>, and <strong>pan</strong> the view.</li>
+<li><strong>Hover</strong> over points to see the values for individual penguins.</li>
+<li>Try to find a viewpoint where the species clusters are most clearly separated.</li>
+</ul>
+<div id="32d7ac63" class="cell" data-execution_count="18">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Shift and rescale body mass to use it as a point size</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>body_mass <span class="op">=</span> penguins[<span class="st">"body_mass_g"</span>]</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>penguins_new <span class="op">=</span> penguins.copy()</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>penguins_new[<span class="st">"body_mass_scaled"</span>] <span class="op">=</span> <span class="bu">round</span>((body_mass <span class="op">-</span> <span class="dv">2700</span>) <span class="op">/</span> <span class="dv">100</span>, <span class="dv">1</span>) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a 3D scatter plot using 4 features</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.scatter_3d(</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    penguins_new,</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"flipper_length_mm"</span>,</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"bill_length_mm"</span>,</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    z<span class="op">=</span><span class="st">"bill_depth_mm"</span>,</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"species"</span>,</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>    size<span class="op">=</span><span class="st">"body_mass_scaled"</span>,</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"Scatter Plot in 3D with Body Mass as Point Size"</span>,</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">"flipper_length_mm"</span>: <span class="st">"Flipper Length (mm)"</span>,</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"bill_length_mm"</span>: <span class="st">"Bill Length (mm)"</span>,</span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"bill_depth_mm"</span>: <span class="st">"Bill Depth (mm)"</span>,</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"body_mass_scaled"</span>: <span class="st">"Body Mass (scaled)"</span></span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>                            <div id="030c090e-8957-47d9-a2f5-ec04f34a59de" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("030c090e-8957-47d9-a2f5-ec04f34a59de")) {                    Plotly.newPlot(                        "030c090e-8957-47d9-a2f5-ec04f34a59de",                        [{"hovertemplate":"species=Adelie<br>Flipper Length (mm)=%{x}<br>Bill Length (mm)=%{y}<br>Bill Depth (mm)=%{z}<br>Body Mass (scaled)=%{marker.size}<extra></extra>","legendgroup":"Adelie","marker":{"color":"#636efa","size":[11.5,12.0,6.5,8.5,10.5,10.2,20.8,6.0,12.0,18.0,11.0,8.5,19.0,7.2,16.0,8.0,10.0,12.0,13.5,12.0,12.0,9.5,6.0,5.5,13.5,6.5,13.0,7.0,13.0,7.2,15.5,13.5,9.5,7.0,20.5,5.5,13.0,5.0,18.0,4.0,20.0,8.2,8.5,15.5,9.0,17.0,8.5,14.5,3.0,11.0,9.5,12.0,2.5,11.5,5.5,18.0,10.0,14.5,2.5,13.5,7.5,15.0,4.5,18.5,10.0,13.0,9.5,15.5,11.0,16.5,11.0,13.0,9.5,14.0,6.0,21.0,12.0,16.0,7.5,9.5,12.0,9.0,13.5,10.0,9.5,17.0,8.0,18.5,7.0,17.0,11.0,17.5,3.0,15.0,11.2,21.2,4.8,16.5,3.2,9.5,11.5,13.0,5.8,21.8,12.2,20.0,6.0,16.8,13.0,14.8,3.0,11.8,7.5,7.2,5.5,9.0,8.5,12.8,4.5,14.0,6.8,17.0,4.5,14.0,7.2,9.0,9.0,18.8,8.2,13.0,5.8,13.8,8.0,16.5,8.0,8.8,4.5,11.2,4.0,10.5,16.5,8.8,8.5,11.5,11.0,14.0],"sizemode":"area","sizeref":0.0925,"symbol":"circle"},"mode":"markers","name":"Adelie","scene":"scene","showlegend":true,"x":[181.0,186.0,195.0,193.0,190.0,181.0,195.0,182.0,191.0,198.0,185.0,195.0,197.0,184.0,194.0,174.0,180.0,189.0,185.0,180.0,187.0,183.0,187.0,172.0,180.0,178.0,178.0,188.0,184.0,195.0,196.0,190.0,180.0,181.0,184.0,182.0,195.0,186.0,196.0,185.0,190.0,182.0,190.0,191.0,186.0,188.0,190.0,200.0,187.0,191.0,186.0,193.0,181.0,194.0,185.0,195.0,185.0,192.0,184.0,192.0,195.0,188.0,190.0,198.0,190.0,190.0,196.0,197.0,190.0,195.0,191.0,184.0,187.0,195.0,189.0,196.0,187.0,193.0,191.0,194.0,190.0,189.0,189.0,190.0,202.0,205.0,185.0,186.0,187.0,208.0,190.0,196.0,178.0,192.0,192.0,203.0,183.0,190.0,193.0,184.0,199.0,190.0,181.0,197.0,198.0,191.0,193.0,197.0,191.0,196.0,188.0,199.0,189.0,189.0,187.0,198.0,176.0,202.0,186.0,199.0,191.0,195.0,191.0,210.0,190.0,197.0,193.0,199.0,187.0,190.0,191.0,200.0,185.0,193.0,193.0,187.0,188.0,190.0,192.0,185.0,190.0,184.0,195.0,193.0,187.0,201.0],"y":[39.1,39.5,40.3,36.7,39.3,38.9,39.2,41.1,38.6,34.6,36.6,38.7,42.5,34.4,46.0,37.8,37.7,35.9,38.2,38.8,35.3,40.6,40.5,37.9,40.5,39.5,37.2,39.5,40.9,36.4,39.2,38.8,42.2,37.6,39.8,36.5,40.8,36.0,44.1,37.0,39.6,41.1,36.0,42.3,39.6,40.1,35.0,42.0,34.5,41.4,39.0,40.6,36.5,37.6,35.7,41.3,37.6,41.1,36.4,41.6,35.5,41.1,35.9,41.8,33.5,39.7,39.6,45.8,35.5,42.8,40.9,37.2,36.2,42.1,34.6,42.9,36.7,35.1,37.3,41.3,36.3,36.9,38.3,38.9,35.7,41.1,34.0,39.6,36.2,40.8,38.1,40.3,33.1,43.2,35.0,41.0,37.7,37.8,37.9,39.7,38.6,38.2,38.1,43.2,38.1,45.6,39.7,42.2,39.6,42.7,38.6,37.3,35.7,41.1,36.2,37.7,40.2,41.4,35.2,40.6,38.8,41.5,39.0,44.1,38.5,43.1,36.8,37.5,38.1,41.1,35.6,40.2,37.0,39.7,40.2,40.6,32.1,40.7,37.3,39.0,39.2,36.6,36.0,37.8,36.0,41.5],"z":[18.7,17.4,18.0,19.3,20.6,17.8,19.6,17.6,21.2,21.1,17.8,19.0,20.7,18.4,21.5,18.3,18.7,19.2,18.1,17.2,18.9,18.6,17.9,18.6,18.9,16.7,18.1,17.8,18.9,17.0,21.1,20.0,18.5,19.3,19.1,18.0,18.4,18.5,19.7,16.9,18.8,19.0,17.9,21.2,17.7,18.9,17.9,19.5,18.1,18.6,17.5,18.8,16.6,19.1,16.9,21.1,17.0,18.2,17.1,18.0,16.2,19.1,16.6,19.4,19.0,18.4,17.2,18.9,17.5,18.5,16.8,19.4,16.1,19.1,17.2,17.6,18.8,19.4,17.8,20.3,19.5,18.6,19.2,18.8,18.0,18.1,17.1,18.1,17.3,18.9,18.6,18.5,16.1,18.5,17.9,20.0,16.0,20.0,18.6,18.9,17.2,20.0,17.0,19.0,16.5,20.3,17.7,19.5,20.7,18.3,17.0,20.5,17.0,18.6,17.2,19.8,17.0,18.5,15.9,19.0,17.6,18.3,17.1,18.0,17.9,19.2,18.5,18.5,17.6,17.5,17.5,20.1,16.5,17.9,17.1,17.2,15.5,17.0,16.8,18.7,18.6,18.4,17.8,18.1,17.1,18.5],"type":"scatter3d"},{"hovertemplate":"species=Chinstrap<br>Flipper Length (mm)=%{x}<br>Bill Length (mm)=%{y}<br>Bill Depth (mm)=%{z}<br>Body Mass (scaled)=%{marker.size}<extra></extra>","legendgroup":"Chinstrap","marker":{"color":"#EF553B","size":[9.0,13.0,10.5,9.2,11.2,13.5,6.5,11.5,15.5,11.0,12.0,11.8,11.0,14.5,9.8,14.5,7.0,11.0,8.5,18.0,10.0,8.0,3.0,12.0,7.0,15.5,8.0,12.0,11.0,19.5,6.0,17.0,7.5,15.0,10.0,13.0,12.5,22.0,1.0,19.0,13.5,10.5,9.5,9.0,10.8,18.5,8.0,17.0,6.5,10.8,7.2,13.5,10.0,14.5,7.5,8.5,6.5,14.5,12.0,9.2,13.5,10.5,10.5,14.0,8.0,11.8,15.0,11.8],"sizemode":"area","sizeref":0.0925,"symbol":"circle"},"mode":"markers","name":"Chinstrap","scene":"scene","showlegend":true,"x":[192.0,196.0,193.0,188.0,197.0,198.0,178.0,197.0,195.0,198.0,193.0,194.0,185.0,201.0,190.0,201.0,197.0,181.0,190.0,195.0,181.0,191.0,187.0,193.0,195.0,197.0,200.0,200.0,191.0,205.0,187.0,201.0,187.0,203.0,195.0,199.0,195.0,210.0,192.0,205.0,210.0,187.0,196.0,196.0,196.0,201.0,190.0,212.0,187.0,198.0,199.0,201.0,193.0,203.0,187.0,197.0,191.0,203.0,202.0,194.0,206.0,189.0,195.0,207.0,202.0,193.0,210.0,198.0],"y":[46.5,50.0,51.3,45.4,52.7,45.2,46.1,51.3,46.0,51.3,46.6,51.7,47.0,52.0,45.9,50.5,50.3,58.0,46.4,49.2,42.4,48.5,43.2,50.6,46.7,52.0,50.5,49.5,46.4,52.8,40.9,54.2,42.5,51.0,49.7,47.5,47.6,52.0,46.9,53.5,49.0,46.2,50.9,45.5,50.9,50.8,50.1,49.0,51.5,49.8,48.1,51.4,45.7,50.7,42.5,52.2,45.2,49.3,50.2,45.6,51.9,46.8,45.7,55.8,43.5,49.6,50.8,50.2],"z":[17.9,19.5,19.2,18.7,19.8,17.8,18.2,18.2,18.9,19.9,17.8,20.3,17.3,18.1,17.1,19.6,20.0,17.8,18.6,18.2,17.3,17.5,16.6,19.4,17.9,19.0,18.4,19.0,17.8,20.0,16.6,20.8,16.7,18.8,18.6,16.8,18.3,20.7,16.6,19.9,19.5,17.5,19.1,17.0,17.9,18.5,17.9,19.6,18.7,17.3,16.4,19.0,17.3,19.7,17.3,18.8,16.6,19.9,18.8,19.4,19.5,16.5,17.0,19.8,18.1,18.2,19.0,18.7],"type":"scatter3d"},{"hovertemplate":"species=Gentoo<br>Flipper Length (mm)=%{x}<br>Bill Length (mm)=%{y}<br>Bill Depth (mm)=%{z}<br>Body Mass (scaled)=%{marker.size}<extra></extra>","legendgroup":"Gentoo","marker":{"color":"#00cc96","size":[19.0,31.0,18.5,31.0,28.0,19.5,22.0,26.0,18.0,25.5,20.5,29.5,20.5,32.5,16.0,32.5,15.5,37.0,22.0,27.5,31.0,24.0,18.0,24.5,24.0,25.0,30.5,20.0,29.5,26.5,21.0,24.5,34.5,25.5,28.0,23.5,26.5,17.5,27.5,13.5,31.0,17.0,21.5,29.5,23.0,16.0,28.0,25.0,27.0,22.5,27.0,18.0,24.0,23.0,24.5,17.0,24.0,18.5,29.5,16.0,27.0,18.0,30.5,21.0,31.0,32.0,21.0,29.5,21.5,24.0,25.0,26.0,21.0,32.0,20.0,34.0,21.5,33.5,20.2,28.5,21.2,27.5,21.5,30.0,20.0,27.0,22.8,29.5,23.5,28.0,21.5,30.5,22.5,26.0,23.2,22.8,20.2,26.5,22.5,30.0,23.8,29.0,29.0,21.0,29.0,19.8,29.0,24.0,33.5,20.5,29.0,17.8,32.5,34.0,23.2,22.5,31.5,26.0,28.0],"sizemode":"area","sizeref":0.0925,"symbol":"circle"},"mode":"markers","name":"Gentoo","scene":"scene","showlegend":true,"x":[211.0,230.0,210.0,218.0,215.0,210.0,211.0,219.0,209.0,215.0,214.0,216.0,214.0,213.0,210.0,217.0,210.0,221.0,209.0,222.0,218.0,215.0,213.0,215.0,215.0,215.0,215.0,210.0,220.0,222.0,209.0,207.0,230.0,220.0,220.0,213.0,219.0,208.0,208.0,208.0,225.0,210.0,216.0,222.0,217.0,210.0,225.0,213.0,215.0,210.0,220.0,210.0,225.0,217.0,220.0,208.0,220.0,208.0,224.0,208.0,221.0,214.0,231.0,219.0,230.0,229.0,220.0,223.0,216.0,221.0,221.0,217.0,216.0,230.0,209.0,220.0,215.0,223.0,212.0,221.0,212.0,224.0,212.0,228.0,218.0,218.0,212.0,230.0,218.0,228.0,212.0,224.0,214.0,226.0,216.0,222.0,203.0,225.0,219.0,228.0,215.0,228.0,215.0,210.0,219.0,208.0,209.0,216.0,229.0,213.0,230.0,217.0,230.0,222.0,214.0,215.0,222.0,212.0,213.0],"y":[46.1,50.0,48.7,50.0,47.6,46.5,45.4,46.7,43.3,46.8,40.9,49.0,45.5,48.4,45.8,49.3,42.0,49.2,46.2,48.7,50.2,45.1,46.5,46.3,42.9,46.1,47.8,48.2,50.0,47.3,42.8,45.1,59.6,49.1,48.4,42.6,44.4,44.0,48.7,42.7,49.6,45.3,49.6,50.5,43.6,45.5,50.5,44.9,45.2,46.6,48.5,45.1,50.1,46.5,45.0,43.8,45.5,43.2,50.4,45.3,46.2,45.7,54.3,45.8,49.8,49.5,43.5,50.7,47.7,46.4,48.2,46.5,46.4,48.6,47.5,51.1,45.2,45.2,49.1,52.5,47.4,50.0,44.9,50.8,43.4,51.3,47.5,52.1,47.5,52.2,45.5,49.5,44.5,50.8,49.4,46.9,48.4,51.1,48.5,55.9,47.2,49.1,46.8,41.7,53.4,43.3,48.1,50.5,49.8,43.5,51.5,46.2,55.1,48.8,47.2,46.8,50.4,45.2,49.9],"z":[13.2,16.3,14.1,15.2,14.5,13.5,14.6,15.3,13.4,15.4,13.7,16.1,13.7,14.6,14.6,15.7,13.5,15.2,14.5,15.1,14.3,14.5,14.5,15.8,13.1,15.1,15.0,14.3,15.3,15.3,14.2,14.5,17.0,14.8,16.3,13.7,17.3,13.6,15.7,13.7,16.0,13.7,15.0,15.9,13.9,13.9,15.9,13.3,15.8,14.2,14.1,14.4,15.0,14.4,15.4,13.9,15.0,14.5,15.3,13.8,14.9,13.9,15.7,14.2,16.8,16.2,14.2,15.0,15.0,15.6,15.6,14.8,15.0,16.0,14.2,16.3,13.8,16.4,14.5,15.6,14.6,15.9,13.8,17.3,14.4,14.2,14.0,17.0,15.0,17.1,14.5,16.1,14.7,15.7,15.8,14.6,14.4,16.5,15.0,17.0,15.5,15.0,16.1,14.7,15.8,14.0,15.1,15.2,15.9,15.2,16.3,14.1,16.0,16.2,13.7,14.3,15.7,14.8,16.1],"type":"scatter3d"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"scene":{"domain":{"x":[0.0,1.0],"y":[0.0,1.0]},"xaxis":{"title":{"text":"Flipper Length (mm)"}},"yaxis":{"title":{"text":"Bill Length (mm)"}},"zaxis":{"title":{"text":"Bill Depth (mm)"}}},"legend":{"title":{"text":"species"},"tracegroupgap":0,"itemsizing":"constant"},"title":{"text":"Scatter Plot in 3D with Body Mass as Point Size"}},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('030c090e-8957-47d9-a2f5-ec04f34a59de');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div>
+</div>
+</div>
+</section>
+</section>
+<section id="prediction-and-vectors" class="level3">
+<h3 class="anchored" data-anchor-id="prediction-and-vectors">Prediction and Vectors</h3>
+<p>Let’s again consider a scatter plot of flipper length vs.&nbsp;body mass.</p>
+<div id="ffd3e8f3" class="cell" data-execution_count="19">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the scatter plot with a single color</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>penguins,</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"flipper_length_mm"</span>,</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"body_mass_g"</span>,</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"steelblue"</span>,       <span class="co"># Single color</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    edgecolor<span class="op">=</span><span class="st">"black"</span>,</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.7</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Body Mass vs. Flipper Length"</span>)</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Flipper Length (mm)"</span>)</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Body Mass (g)"</span>)</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_vectors_files/figure-html/cell-20-output-1.png" width="656" height="463" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>These two features appear to be <strong>linearly related</strong> —– the points fall roughly along a straight line. As flipper length increases, body mass increases in a steady, consistent way.</p>
+<p>This suggests that <strong>body mass</strong> could be roughly <strong>predicted</strong> from <strong>flipper length</strong>.</p>
+<p>In order to make predictions, we need to first fit a <strong>line</strong> to the data.</p>
+<p>A straight line has the general form:</p>
+<p><span class="math display">\[
+y = \beta x + v
+\]</span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(x\)</span> is the <strong>input feature</strong> (in this case, flipper length),</li>
+<li><span class="math inline">\(y\)</span> is the <strong>predicted output</strong> (in this case, body mass),</li>
+<li><span class="math inline">\(\beta\)</span> is the <strong>slope</strong> of the line,</li>
+<li><span class="math inline">\(v\)</span> is the <strong>intercept</strong> — the value of <span class="math inline">\(y\)</span> when <span class="math inline">\(x = 0\)</span>.</li>
+</ul>
+<p>For this feature pair, let’s try using the line:</p>
+<p><span class="math display">\[
+y = 49.7 x - 5780.8
+\]</span></p>
+<p>Let’s first see how well the line fits the data visually:</p>
+<div id="bf0ac785" class="cell" data-execution_count="20">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Known slope and intercept</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>beta <span class="op">=</span> <span class="fl">49.7</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> <span class="op">-</span><span class="fl">5780.8</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the x range using min and max of the actual data</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> penguins[<span class="st">"flipper_length_mm"</span>]</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> penguins[<span class="st">"body_mass_g"</span>]</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>x0 <span class="op">=</span> x.<span class="bu">min</span>()</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> x.<span class="bu">max</span>()</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>y0 <span class="op">=</span> beta <span class="op">*</span> x0 <span class="op">+</span> v</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>y1 <span class="op">=</span> beta <span class="op">*</span> x1 <span class="op">+</span> v</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Create scatter plot and add the line using two points</span></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(x<span class="op">=</span>x, y<span class="op">=</span>y, color<span class="op">=</span><span class="st">"steelblue"</span>, edgecolor<span class="op">=</span><span class="st">"black"</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>plt.plot([x0, x1], [y0, y1], color<span class="op">=</span><span class="st">"red"</span>, linewidth<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f"y = </span><span class="sc">{</span>beta<span class="sc">}</span><span class="ss">x + </span><span class="sc">{</span>v<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Flipper Length (mm)"</span>)</span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Body Mass (g)"</span>)</span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Modeling Body Mass as a Linear Function of Flipper Length"</span>)</span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_vectors_files/figure-html/cell-21-output-1.png" width="656" height="463" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="remaining-topics" class="level3">
+<h3 class="anchored" data-anchor-id="remaining-topics">Remaining Topics</h3>
+<p>This final part of Chapter 1 builds toward the least squares derivation for fitting a line using the math of vectors, orthogonality, and projections.</p>
+<ol type="1">
+<li><p>Pose the Central Questions</p>
+<ul>
+<li>How do we measure how well a line fits the data?</li>
+<li>Given a way to measure fit, how do we find the <strong>best</strong> line?</li>
+</ul>
+<p>Both questions require us to understand and operate on <strong>vectors</strong>.</p></li>
+<li><p>Introduce Vectors Formally</p>
+<ul>
+<li>Define a <strong>vector</strong> as a list of numbers — one per penguin.</li>
+<li>Define basic vector operations:
+<ul>
+<li><strong>Scalar multiplication</strong></li>
+<li><strong>Vector addition</strong></li>
+<li><strong>Linear combinations</strong></li>
+</ul></li>
+<li>Express the <strong>predicted body mass vector</strong> as the <strong>linear combination</strong>:</li>
+</ul>
+<p><span class="math display">\[
+\mathbf{\hat{y}} = \beta \mathbf{x} + v \mathbf{1}
+\]</span></p>
+<ul>
+<li>Show how to compute this feature in Python using <strong>broadcasting</strong> (without NumPy).</li>
+</ul></li>
+<li><p>Measuring Fit Using Vector Distance</p>
+<ul>
+<li>Define the <strong>error vector</strong>: <span class="math inline">\(\mathbf{e} = \mathbf{y} - \mathbf{\hat{y}}\)</span> -Define:
+<ul>
+<li>Vector <strong>length</strong> (norm),</li>
+<li><strong>Difference vectors</strong>, and</li>
+<li><strong>Distance</strong> between vectors using squared error</li>
+</ul></li>
+<li>This gives us a <strong>numerical measure</strong> of how good the fit is.</li>
+</ul></li>
+<li><p>The Goal: Least Squares Line</p>
+<ul>
+<li>Define the <strong>least squares line</strong> as the one that <strong>minimizes the squared error</strong> between predicted and actual body mass.</li>
+<li>Emphasize: we’re looking for <span class="math inline">\(\beta\)</span> and <span class="math inline">\(v\)</span> that minimize:</li>
+</ul>
+<p><span class="math display">\[
+\|\mathbf{y} - (\beta \mathbf{x} + v)\|^2
+\]</span></p></li>
+<li><p>Geometric Insight</p>
+<ul>
+<li>Draw a <strong>cartoon</strong> in <span class="math inline">\(\mathbb{R}^2\)</span> (or <span class="math inline">\(\mathbb{R}^{333}\)</span> abstractly).
+<ul>
+<li>Show:
+<ul>
+<li>Actual feature vector <span class="math inline">\(\mathbf{y}\)</span></li>
+<li>Approximate vector <span class="math inline">\(\hat{\mathbf{y}}\)</span> (not lying on line in the <span class="math inline">\(\mathbf{y}\)</span> direction)</li>
+<li>Error vector <span class="math inline">\(\mathbf{e}\)</span></li>
+</ul></li>
+</ul></li>
+<li>Argue: To minimize error, <span class="math inline">\(\mathbf{e}\)</span> must be <strong>orthogonal</strong> to the line in the direction of <span class="math inline">\(\mathbf{y}\)</span>.</li>
+</ul></li>
+<li><p>Orthogonality and the Dot Product</p>
+<ul>
+<li><p>Recall the <strong>Pythagorean theorem</strong> and use it to motivate the dot product .. vectors are orthogonal if and only if <span class="math inline">\(x_1 y_1 + ...+ x_n y_n = 0\)</span></p></li>
+<li><p>Define the <strong>dot product</strong>:</p></li>
+</ul>
+<p><span class="math display">\[
+\mathbf{x}^T \mathbf{y} = x_1 y_1 + \cdots + x_n y_n
+\]</span></p>
+<ul>
+<li>Define <strong>orthogonality</strong> via dot product</li>
+</ul>
+<p><span class="math display">\[
+\mathbf{x} \perp \mathbf{e} \iff \mathbf{x}^T \mathbf{e} = 0
+\]</span></p></li>
+<li><p>Projection Onto a Line</p>
+<ul>
+<li>Define the <strong>orthogonal projection</strong> of <span class="math inline">\(\mathbf{y}\)</span> onto the line spanned by <span class="math inline">\(\mathbf{x}\)</span></li>
+<li>State the condition: the residual vector must be orthogonal to <span class="math inline">\(\mathbf{x}\)</span></li>
+<li>Derive the <strong>projection formula</strong>:</li>
+</ul>
+<p><span class="math display">\[
+\mathbf{\hat{y}} = \frac{\mathbf{x}^T \mathbf{y}}{\mathbf{x}^T \mathbf{x}} \cdot \mathbf{x}
+\]</span></p></li>
+<li><p>Prove It Minimizes Error</p>
+<ul>
+<li>Use the Pythagorean theorem and triangle inequality to show:</li>
+<li>This projection is the <strong>closest possible</strong> vector to <span class="math inline">\(\mathbf{y}\)</span> on the line</li>
+<li>Conclude: this is the best possible predictor using a single feature</li>
+</ul></li>
+<li><p>Derive the Least Squares Line</p>
+<ul>
+<li>From projection: compute the slope <span class="math inline">\(\beta\)</span> and intercept of the least squares line.</li>
+</ul></li>
+<li><p>Correlation and Linearity</p>
+<ul>
+<li>Ask: What makes two features <strong>linearly related</strong>?</li>
+<li>Use the <strong>dot product</strong> to define <strong>correlation</strong>:</li>
+</ul>
+<p><span class="math display">\[
+\text{corr}(\mathbf{x}, \mathbf{y}) = \frac{\mathbf{x}^T \mathbf{y}}{\|\mathbf{x}\| \|\mathbf{y}\|}
+\]</span></p>
+<ul>
+<li>Investigate which other pairs of penquin features are strongly correlated (if any)</li>
+<li>Preview the deeper connection between <strong>correlation</strong> and <strong>linear prediction</strong></li>
+</ul></li>
+<li><p>Summarize and preview multivariable models and matrices for chapter 2.</p></li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../index.html" class="pagination-link" aria-label="Preface">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Preface</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
